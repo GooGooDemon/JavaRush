@@ -32,12 +32,21 @@ import java.io.InputStreamReader;
 
 public class Solution {
     public static void main(String[] args) throws Exception {
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        if (args.length == 0) return;
 
-        String fileName1 = console.readLine();
+        String tag = args[0];
+
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        String fileName1 = "d:/bonus03.txt"; //console.readLine();
         console.close();
 
+
         BufferedReader file1 = new BufferedReader(new FileReader(fileName1));
+
+        String line;
+        while ((line = file1.readLine()) != null) {
+            //line = line.replaceAll()
+        }
 
         file1.close();
     }
