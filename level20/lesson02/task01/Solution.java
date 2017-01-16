@@ -17,19 +17,26 @@ public class Solution {
         //вы можете найти your_file_name.tmp в папке TMP или исправьте outputStream/inputStream в соответствии с путем к вашему реальному файлу
         try {
 
-            //File your_file_name = File.createTempFile("d:/level20.lesson02.task01.txt", null);
-            OutputStream outputStream = new FileOutputStream("d:/level20.lesson02.task01.txt");
-            InputStream inputStream = new FileInputStream("d:/level20.lesson02.task01.txt");
+            // File myFile = File.createTempFile("d:/level20.lesson02.task01.txt", null);
+            FileOutputStream outputStream = new FileOutputStream("d:/level20.lesson02.task01.txt");
 
             Human ivanov = new Human("Ivanov", new Asset("home"), new Asset("car"));
             ivanov.save(outputStream);
-            outputStream.flush();
             outputStream.close();
 
+            InputStream inputStream = new FileInputStream("d:/level20.lesson02.task01.txt");
             Human somePerson = new Human();
             somePerson.load(inputStream);
-            //check here that ivanov equals to somePerson - проверьте тут, что ivanov и somePerson равны
             inputStream.close();
+
+            //check here that ivanov equals to somePerson - проверьте тут, что ivanov и somePerson равны
+
+            if (somePerson.equals(ivanov)) {
+                System.out.println("Всё верно! somePerson равен ivanov");
+            }
+            else
+                System.out.println("somePerson и ivanov различаются!");
+
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -59,37 +66,54 @@ public class Solution {
             //implement this method - реализуйте этот метод
             PrintWriter writer = new PrintWriter(outputStream);
 
-            writer.print("human:" + name);
-            writer.print("count:" + assets.size());
+            writer.println(name);
+            writer.println(assets.size());
 
             for (Asset asset : assets) {
-                writer.print("asset:" + asset.getName());
-                writer.print("asset:" + asset.getPrice());
+                writer.println(asset.getName());
+                writer.println(asset.getPrice());
             }
+            writer.flush();
         }
 
         public void load(InputStream inputStream) throws Exception {
             //implement this method - реализуйте этот метод
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = reader.readLine();
-            if (line.contains("human:")) {
-                name = line.replace("human:", "");
+
+            name = reader.readLine();
+
+            int count = Integer.parseInt(reader.readLine());
+            for (int i = count; i > 0; i--) {
+                String assetName = reader.readLine();
+                String assetPrice = reader.readLine();
+
+                Asset asset = new Asset(assetName);
+                asset.setPrice(Double.parseDouble(assetPrice));
+                assets.add(asset);
             }
-            else
-                return;
+        }
 
-            line = reader.readLine().replaceFirst("count:", "");
-            int count = Integer.parseInt(line);
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass())
+                return false;
 
-            for (int i = count; i >= 0; i--) {
-                String assetName = reader.readLine().replaceFirst("asset:", "");
-                String assetPrice = reader.readLine().replaceFirst("asset:", "");
+            Human other = (Human) obj;
 
-                Asset newAsset = new Asset(assetName);
-                newAsset.setPrice(Double.parseDouble(assetPrice));
-                assets.add(newAsset);
+            boolean cmp = name.equals(other.name);
+            if (!cmp) {
+                return false;
             }
 
+            cmp = assets.equals(other.assets);
+            if (!cmp) {
+                return false;
+            }
+
+            return true;
         }
     }
 }

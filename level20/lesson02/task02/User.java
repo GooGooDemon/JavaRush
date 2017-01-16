@@ -1,5 +1,7 @@
 package com.javarush.test.level20.lesson02.task02;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {
@@ -65,4 +67,37 @@ public class User {
         }
     }
 
+    public void save(OutputStream outputStream) throws Exception {
+        PrintWriter writer = new PrintWriter(outputStream);
+        writer.println(firstName);
+        writer.println(lastName);
+        writer.println(new SimpleDateFormat("dd.MM.yyyy").format(birthDate));
+        writer.println(isMale);
+        writer.println(country);
+        writer.flush();
+    }
+
+    public void load(BufferedReader reader) throws Exception {
+        firstName = reader.readLine();
+        lastName = reader.readLine();
+        birthDate = new SimpleDateFormat("dd.MM.yyyy").parse(reader.readLine());
+        isMale = Boolean.parseBoolean(reader.readLine());
+        String countryString = reader.readLine();
+        country = Country.valueOf(countryString);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null || obj.getClass() != getClass()) return false;
+
+        User other = (User) obj;
+
+        return firstName.equals(other.firstName)
+                && lastName.equals(other.lastName)
+                && birthDate.equals(other.birthDate)
+                && isMale == other.isMale
+                && country.equals(other.country);
+    }
 }

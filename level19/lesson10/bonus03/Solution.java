@@ -26,28 +26,62 @@ text2>text1</tag>
 text1, text2 могут быть пустыми
 */
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Solution {
     public static void main(String[] args) throws Exception {
-        if (args.length == 0) return;
+        String fileName = "", tag, txt = "";
 
-        String tag = args[0];
+        if (args.length > 0) {
+            tag = args[0];
+            if (tag.equals("CDATA")) return;
+        }
+        else return;
 
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        String fileName1 = "d:/bonus03.txt"; //console.readLine();
-        console.close();
-
-
-        BufferedReader file1 = new BufferedReader(new FileReader(fileName1));
-
-        String line;
-        while ((line = file1.readLine()) != null) {
-            //line = line.replaceAll()
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in))){
+            fileName = console.readLine();
+        }
+        catch (Exception e){
+            System.out.println("IO error");
         }
 
-        file1.close();
+        try (BufferedReader in = new BufferedReader(new FileReader(fileName)))
+        {
+            while (in.ready()) {
+                txt += in.readLine();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found");
+        }
+        catch (IOException e)
+        {
+            System.out.println("IO error");
+        }
+
+        Stack<Integer> index = new Stack<>();
+        Map<Integer, Integer> map = new TreeMap<>();
+
+        for (int i = 0; i < txt.length() - tag.length() - 2; i++)
+        {
+            if (txt.substring(i, i + 2 + tag.length()).equals("<" + tag + ">") ||
+                    txt.substring(i, i + 2 + tag.length()).equals("<" + tag + " "))
+            {
+                index.push(i);
+            }
+            if (txt.substring(i, i + 3 + tag.length()).equals("</" + tag + ">"))
+            {
+                if  (!index.empty())
+                    map.put(index.pop(), i);
+            }
+        }
+
+        for (Map.Entry<Integer, Integer> m: map.entrySet()){
+            System.out.println(txt.substring(m.getKey(), m.getValue() + tag.length() + 3).replaceAll("\\r\\n", ""));
+        }
     }
+
+
 }
