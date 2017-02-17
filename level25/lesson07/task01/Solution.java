@@ -20,6 +20,19 @@ public class Solution extends Thread {
 
     public void interrupt() {
         //implement logic here
+        try
+        {
+            socket.close();
+            in.close();
+        }
+        catch (IOException e)
+        {
+
+        }
+        finally
+        {
+            super.interrupt();
+        }
     }
 
     public void run() {
