@@ -51,11 +51,9 @@ import java.util.List;
 Должно быть наследование AbstractList<String>, List<String>, Cloneable, Serializable
 Метод main в тестировании не участвует
 */
-public class Solution {
+public class Solution extends LinkedList {
     public static void main(String[] args) {
-        //List<String> list; = new Solution(); я закомментировал
-        List<String> list = new LinkedList<>(); // этой строки не было
-
+        List<String> list = new Solution();
         for (int i = 1; i < 16; i++) {
             list.add(String.valueOf(i));
         }
