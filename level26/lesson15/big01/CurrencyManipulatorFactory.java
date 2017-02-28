@@ -12,6 +12,24 @@ public class CurrencyManipulatorFactory
 {
     private static Map<String, CurrencyManipulator> manipulators = new HashMap<>();
 
+    static {
+        CurrencyManipulator rub = getManipulatorByCurrencyCode("RUB");
+        rub.addAmount(1000, 1);
+        rub.addAmount(500, 2);
+        rub.addAmount(200, 3);
+        rub.addAmount(100, 0);
+        rub.addAmount(50, 0);
+        //rub.addAmount(50, 100);
+
+        CurrencyManipulator usd = getManipulatorByCurrencyCode("USD");
+        usd.addAmount(100, 100);
+        usd.addAmount(50, 100);
+        usd.addAmount(20, 100);
+        usd.addAmount(10, 100);
+        usd.addAmount(5, 100);
+        usd.addAmount(1, 100);
+    }
+
     private CurrencyManipulatorFactory()
     {
     }

@@ -6,12 +6,19 @@ import com.javarush.test.level26.lesson15.big01.CurrencyManipulator;
 import com.javarush.test.level26.lesson15.big01.CurrencyManipulatorFactory;
 
 import java.util.Collection;
+import java.util.ResourceBundle;
+
+import static com.javarush.test.level26.lesson15.big01.CashMachine.RESOURCE_PATH;
 
 class InfoCommand implements Command
 {
+    private ResourceBundle res = ResourceBundle.getBundle(RESOURCE_PATH + "info");
+
     @Override
     public void execute()
     {
+        ConsoleHelper.writeMessage(res.getString("before"));
+
         boolean hasMoney = false;
 
         Collection<CurrencyManipulator> manipulators = CurrencyManipulatorFactory.getAllCurrencyManipulators();
@@ -26,7 +33,7 @@ class InfoCommand implements Command
         }
         if (!hasMoney)
         {
-            ConsoleHelper.writeMessage("No money available.");
+            ConsoleHelper.writeMessage(res.getString("no.money"));
         }
     }
 }

@@ -1,14 +1,21 @@
 package com.javarush.test.level26.lesson15.big01;
 
+import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ResourceBundle;
+
+import static com.javarush.test.level26.lesson15.big01.CashMachine.RESOURCE_PATH;
 
 /**
  * Created by nemchinov on 22.02.2017.
  */
 public class ConsoleHelper
 {
+    private static ResourceBundle res = ResourceBundle.getBundle(RESOURCE_PATH + "common");
+
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void writeMessage(String message)
@@ -16,12 +23,16 @@ public class ConsoleHelper
         System.out.println(message);
     }
 
-    public static String readString()
+    public static String readString() throws InterruptOperationException
     {
         String message = "";
         try
         {
-            return reader.readLine();
+            message = reader.readLine();
+            if (message.equalsIgnoreCase(res.getString("operation.EXIT")))
+            {
+                throw new InterruptOperationException();
+            }
         }
         catch (IOException e)
         {
@@ -30,29 +41,29 @@ public class ConsoleHelper
         return message;
     }
 
-    public static String askCurrencyCode()
+    public static String askCurrencyCode() throws InterruptOperationException
     {
         String result = "";
         boolean valid = false;
 
         while (!valid)
         {
-            writeMessage("Enter currency code (3 symbols):");
+            writeMessage(res.getString("choose.currency.code"));
             result = readString();
             valid = result.length() == 3;
             if (!valid)
-                writeMessage("Invalid currency code! Enter again, please...");
+                writeMessage(res.getString("invalid.data"));
         }
         return result.toUpperCase();
     }
 
-    public static String[] getValidTwoDigits(String currencyCode)
+    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException
     {
         String[] array;
 
         while (true)
         {
-            writeMessage("Enter nominal and count (two positive numbers greater than zero):");
+            writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
             String s = readString();
             array = s.split(" ");
             int k;
@@ -62,14 +73,15 @@ public class ConsoleHelper
                 k = Integer.parseInt(array[0]);
                 l = Integer.parseInt(array[1]);
             }
-            catch (Exception e)
+            catch (NumberFormatException e)
             {
-                writeMessage("Invalid data! Enter again, please...");
+                writeMessage(res.getString("invalid.data"));
                 continue;
             }
+
             if (k <= 0 || l <= 0 || array.length > 2)
             {
-                writeMessage("Invalid data! Enter again, please...");
+                writeMessage(res.getString("invalid.data"));
                 continue;
             }
             break;
@@ -77,27 +89,24 @@ public class ConsoleHelper
         return array;
     }
 
-    public static Operation askOperation()
+    public static Operation askOperation() throws InterruptOperationException
     {
-        Operation operation = null;
-        boolean valid = false;
-
-        while (!valid)
+        while (true)
         {
-            writeMessage("Enter operation (1 - INFO, 2 - DEPOSIT, 3 - WITHDRAW, 4 - EXIT): ");
             String operationNumber = readString();
             try
             {
-                operation = Operation.getAllowableOperationByOrdinal(Integer.parseInt(operationNumber));
+                return Operation.getAllowableOperationByOrdinal(Integer.parseInt(operationNumber));
             }
             catch (Exception e)
             {
-
+                writeMessage(res.getString("invalid.data"));
             }
-            valid = operation != null;
-            if (!valid)
-                writeMessage("Invalid operation number! Enter again, please...");
         }
-        return operation;
+    }
+
+    public static void printExitMessage()
+    {
+        writeMessage(res.getString("the.end"));
     }
 }

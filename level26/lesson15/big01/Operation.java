@@ -5,6 +5,7 @@ package com.javarush.test.level26.lesson15.big01;
  */
 public enum Operation
 {
+    LOGIN,
     INFO,
     DEPOSIT,
     WITHDRAW,
@@ -14,6 +15,7 @@ public enum Operation
     {
         switch(i)
         {
+            case 0: throw new IllegalArgumentException();
             case 1: return INFO;
             case 2: return DEPOSIT;
             case 3: return WITHDRAW;
