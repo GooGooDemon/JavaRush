@@ -30,6 +30,9 @@ public class Solution {
 
     public static boolean isNormalLockOrder(final Solution solution, final Object o1, final Object o2) throws Exception
     {
+        /*final boolean[] o1Captured = {false};
+        final boolean[] o2Captured = {false};
+
         Thread t1 = new Thread() {
             @Override
             public void run()
@@ -38,43 +41,51 @@ public class Solution {
                 {
                     while (!isInterrupted())
                     {
-                        solution.someMethodWithSynchronizedBlocks(o1, o2);
-                        Thread.sleep(50);
+                        synchronized (o1) {
+                            o1Captured[0] = true;
+                            System.out.println("o1 is captured");
+                            synchronized (o2)
+                            {
+                                o2Captured[0] = true;
+                                System.out.println("o2 is captured");
+                                Thread.sleep(500);
+                            }
+                        }
 
                     }
                 }
-                catch (InterruptedException e)
-                {
-
-                }
+                catch (InterruptedException e) {  }
             }
         };
+
+
         t1.start();
-
-        //Thread.sleep(50);
-        synchronized (o1)
-        {
-            System.out.println("o1 is captured");
-            //Thread.sleep(500);
-        }
-
-        synchronized (o2)
-        {
-            System.out.println("o2 is captured");
-            //Thread.sleep(500);
-        }
+        Thread.sleep(50);
+        t1.interrupt();
 
         System.out.println(t1.getState());
 
         if (t1.getState() == Thread.State.BLOCKED)
         {
-
+            System.out.println("t1 is BLOCKED");
         }
 
 
 
+        Thread t2 = new Thread() {
+            @Override
+            public void run()
+            {
+                solution.someMethodWithSynchronizedBlocks(o1, o2);
+            }
+        };
+        t2.start();
+        Thread.sleep(50);
+        t2.interrupt();*/
 
-        return false;
+
+
+        return o1.hashCode() > o2.hashCode();
     }
 
     public static void main(String[] args) throws Exception {
