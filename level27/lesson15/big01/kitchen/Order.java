@@ -19,6 +19,32 @@ public class Order
         dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    public Tablet getTablet()
+    {
+        return tablet;
+    }
+
+    public List<Dish> getDishes()
+    {
+        return dishes;
+    }
+
+    public int getTotalCookingTime()
+    {
+        int total = 0;
+        for (Dish dish : dishes)
+        {
+            total += dish.getDuration();
+
+        }
+        return total;
+    }
+
+    public boolean isEmpty()
+    {
+        return dishes.isEmpty();
+    }
+
     @Override
     public String toString()
     {

@@ -26,13 +26,21 @@ public class ConsoleHelper
     public static List<Dish> getAllDishesForOrder() throws IOException
     {
         writeMessage("Please choice dishes:");
+        ConsoleHelper.writeMessage(Dish.allDishesToString());
 
         List<Dish> resultList = new ArrayList<>();
 
         String str;
         while (!(str = readString()).equalsIgnoreCase("EXIT"))
         {
-            resultList.add(Dish.valueOf(str));
+            try
+            {
+                resultList.add(Dish.valueOf(str));
+            }
+            catch (IllegalArgumentException e)
+            {
+                writeMessage(String.format("%s is not detected", str));
+            }
         }
         return resultList;
     }
