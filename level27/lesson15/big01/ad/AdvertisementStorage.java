@@ -16,9 +16,15 @@ class AdvertisementStorage
     private AdvertisementStorage()
     {
         Object someContent = new Object();
-        add(new Advertisement(someContent, "First Video", 5000, 100, 3 * 60)); // 3 min
-        add(new Advertisement(someContent, "Second Video", 100, 10, 15 * 60)); //15 min
-        add(new Advertisement(someContent, "Third Video", 400, 2, 10 * 60));   //10 min
+        add(new Advertisement(someContent, "First Video 1", 1000, 100, 60));
+        add(new Advertisement(someContent, "First Video 2", 3000, 100, 50));
+        add(new Advertisement(someContent, "First Video 3", 5000, 100, 150));
+        add(new Advertisement(someContent, "Second Video 1", 100, 10, 10));
+        add(new Advertisement(someContent, "Second Video 2", 200, 10, 5*60));
+        add(new Advertisement(someContent, "Second Video 3", 300, 10, 35));
+        add(new Advertisement(someContent, "Third Video 1", 300, 2, 3*60));
+        add(new Advertisement(someContent, "Third Video 2", 400, 2, 3*60));
+        add(new Advertisement(someContent, "Third Video 3", 800, 2, 3*60));
     }
 
     private final List<Advertisement> videos = new ArrayList<>();
