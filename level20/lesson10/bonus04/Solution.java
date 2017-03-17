@@ -54,7 +54,8 @@ import java.util.List;
 */
 public class Solution extends AbstractList<String> implements List<String>, Cloneable, Serializable
 {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         List<String> list = new Solution();
         for (int i = 1; i < 16; i++) {
             list.add(String.valueOf(i));
@@ -64,20 +65,78 @@ public class Solution extends AbstractList<String> implements List<String>, Clon
         System.out.println("Expected null, actual is " + ((Solution) list).getParent("11"));
     }
 
-    public String getParent(String value) {
-        //have to be implemented
-        return null;
+    private class Node {
+        String value;
+        Node left;
+        Node right;
+        Node parent;
+
+        Node(Node parent, String value, Node left, Node right)
+        {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
+        }
     }
 
-    @Override
-    public String get(int index)
+    private Node root;
+    private Node last;
+
+    public Solution()
     {
-        return null;
+        root = new Node(null, null, null, null);
+        last = root;
     }
+
+    public String getParent(String value) {
+        //have to be implemented
+        Node result = null;
+
+        return result != null ? result.value : null;
+    }
+
 
     @Override
     public int size()
     {
         return 0;
+    }
+
+    @Override
+    public boolean add(String s)
+    {
+        Node newNode = new Node(last, s, null, null);
+        if (last.left == null)
+        {
+            last.left = newNode;
+        }
+        else if (last.right == null)
+        {
+            last.right = newNode;
+        }
+        else
+        {
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o)
+    {
+        return super.remove(o);
+    }
+
+    @Override
+    public void add(int index, String element)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String get(int index)
+    {
+        throw new UnsupportedOperationException();
     }
 }
