@@ -29,7 +29,6 @@ public class Tablet extends Observable
             if (!order.isEmpty())
             {
                 ConsoleHelper.writeMessage(order.toString());
-
                 setChanged();
                 notifyObservers(order);
 
